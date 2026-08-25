@@ -108,13 +108,12 @@ export function Catalog() {
           <span className="footer-sep">·</span>
           <a
             className="footer-link"
-            href="https://github.com/"
+            href="https://github.com/fabriziomazzei/paroloteca"
             target="_blank"
             rel="noreferrer"
           >
             Codice su GitHub
           </a>
-          <span className="footer-soon"> (link in arrivo)</span>
         </p>
       </footer>
     </>

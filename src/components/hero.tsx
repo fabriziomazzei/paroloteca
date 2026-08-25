@@ -21,9 +21,7 @@ export function HeroBrain({
         <h1 className="hero-brand">
           Pa<span className="hero-brand-r">(r)</span>oloteca
         </h1>
-        <p className="hero-tagline">
-          Il mio ordine tra i suoi libri e ascolti.
-        </p>
+        <p className="hero-tagline">Una costellazione di parole.</p>
       </div>
       <div className="hero-graph">
         <BookBrainGraph onOpenBook={onOpenBook} onOpenAudio={onOpenAudio} />

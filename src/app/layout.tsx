@@ -21,9 +21,19 @@ const plex = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pa(r)oloteca · Il mio ordine",
+  title: "Pa(r)oloteca · Una costellazione di parole",
   description:
-    "Il mio ordine tra i suoi libri e ascolti. Un dono di Fabrizio Mazzei a Paolo Borzacchiello.",
+    "Una costellazione di parole: libri e ascolti di Paolo Borzacchiello, collegati in rete.",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+    },
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
