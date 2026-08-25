@@ -1,4 +1,4 @@
-/** Auto-generato da tools/build_teasers.py. Teasing: titoli capitolo / nomi tecnica, senza corpo. */
+/** Teasing libri: titoli capitolo / nomi tecnica, senza corpo. */
 export type BookTeaser = {
   pages: number | null;
   chapters: string[];

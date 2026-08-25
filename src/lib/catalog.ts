@@ -41,12 +41,6 @@ export function listenTeaserOf(id: string) {
   return LISTEN_TEASERS[id];
 }
 
-export function featuredBooks(): Book[] {
-  return [...BOOKS].sort(
-    (a, b) => b.year - a.year || a.title.localeCompare(b.title, "it"),
-  );
-}
-
 function matchEra(era: EraId | "all", itemEra: EraId) {
   return era === "all" || itemEra === era;
 }
@@ -96,19 +90,6 @@ export function itemsByYear(scope: ScopeId, era: EraId | "all") {
   return [...map.entries()]
     .sort(([a], [b]) => a - b)
     .map(([year, items]) => ({ year, items }));
-}
-
-export function visibleListens(kind: ListenKind | "all", era: EraId | "all") {
-  return LISTENS.filter((item) => {
-    if (kind !== "all" && item.kind !== kind) return false;
-    if (!matchEra(era, item.era)) return false;
-    return true;
-  }).sort((a, b) => {
-    const ay = a.year ?? 9999;
-    const by = b.year ?? 9999;
-    if (ay !== by) return ay - by;
-    return a.title.localeCompare(b.title, "it");
-  });
 }
 
 export function listenKindLabel(kind: ListenKind) {
