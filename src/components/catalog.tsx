@@ -67,6 +67,7 @@ export function Catalog() {
         {layout === "timeline" ? (
           <VerticalTimeline
             blocks={yearBlocks}
+            scope={scope}
             onOpenBook={openBookModal}
             onOpenAudio={openAudioModal}
           />
@@ -81,6 +82,7 @@ export function Catalog() {
                 <ItemCard
                   item={item}
                   view="shelf"
+                  scope={scope}
                   onOpenBook={openBookModal}
                   onOpenAudio={openAudioModal}
                 />
@@ -96,6 +98,8 @@ export function Catalog() {
         book={openBook}
         listen={openListen}
         onClose={closeModal}
+        onOpenBook={openBookModal}
+        onOpenAudio={openAudioModal}
       />
 
       <footer className="site-footer">

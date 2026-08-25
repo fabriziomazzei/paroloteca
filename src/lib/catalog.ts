@@ -4,6 +4,7 @@ import { FORMS } from "@/data/forms";
 import { LISTENS } from "@/data/listens";
 import { LISTEN_TEASERS } from "@/data/listen-teasers";
 import { TEASERS } from "@/data/teasers";
+import { relatedNeighbors } from "@/lib/book-graph";
 import type {
   Book,
   BookTeaser,
@@ -100,4 +101,76 @@ export function listenKindLabel(kind: ListenKind) {
     corso: "Corso",
   };
   return map[kind];
+}
+
+export function catalogKindLabel(kind: "book" | "listen") {
+  return kind === "book" ? "Lettura" : "Ascolto";
+}
+
+export type RelatedPick = {
+  item: CatalogItem;
+  reason: string;
+};
+
+function pickReason(reasons: string[]) {
+  return (
+    reasons.find((reason) => !reason.startsWith("Stesso filo")) ??
+    reasons[0] ??
+    ""
+  );
+}
+
+export function relatedItems(id: string, limit = 3): RelatedPick[] {
+  const picks: RelatedPick[] = [];
+  for (const neighbor of relatedNeighbors(id, limit + 3)) {
+    if (picks.length >= limit) break;
+    const book = findBook(neighbor.id);
+    if (book) {
+      picks.push({
+        item: { kind: "book", book },
+        reason: pickReason(neighbor.reasons),
+      });
+      continue;
+    }
+    const listen = findListen(neighbor.id);
+    if (listen && listen.kind !== "audiolibro") {
+      picks.push({
+        item: { kind: "listen", listen },
+        reason: pickReason(neighbor.reasons),
+      });
+    }
+  }
+  return picks;
+}
+
+const KEEP_CAPS = new Set([
+  "HCE",
+  "PNL",
+  "IBM",
+  "DPI",
+  "DMN",
+  "ALF",
+  "BOC",
+  "SPARK",
+  "E3",
+  "YA",
+]);
+
+/** Titoli indice: niente caps lock, maiuscola solo in apertura e dopo . ! ? : */
+export function toSentenceCase(text: string): string {
+  const softened = text.replace(/\p{L}[\p{L}\p{M}\d]*/gu, (word) => {
+    if (KEEP_CAPS.has(word)) return word;
+    const letters = [...word].filter((ch) => /\p{L}/u.test(ch));
+    if (letters.length < 1) return word;
+    const allCaps =
+      word === word.toLocaleUpperCase("it") &&
+      word !== word.toLocaleLowerCase("it");
+    return allCaps ? word.toLocaleLowerCase("it") : word;
+  });
+
+  return softened.replace(
+    /(^|[.!?…:]\s*)([^\p{L}]*)(\p{L})/gu,
+    (_, prefix: string, extra: string, letter: string) =>
+      prefix + extra + letter.toLocaleUpperCase("it"),
+  );
 }

@@ -2,7 +2,7 @@
 
 **Una costellazione di parole.**
 
-Sito Next.js: libri e ascolti di [Paolo Borzacchiello](https://www.paoloborzacchiello.com/), collegati in un grafo interattivo. UI ispirata all’ecosistema HCE.
+Sito Next.js: letture e ascolti di [Paolo Borzacchiello](https://www.paoloborzacchiello.com/), collegati in un grafo interattivo. UI ispirata all’ecosistema HCE.
 
 Live (noindex): [paroloteca.vercel.app](https://paroloteca.vercel.app/)
 
@@ -11,8 +11,8 @@ Live (noindex): [paroloteca.vercel.app](https://paroloteca.vercel.app/)
 ## Cosa fa
 
 - **Hero a costellazione** – nodi con copertine, force-graph, particelle sulle linee, alone per filo di lettura
-- **Schede in modale** – libri e audio con indici / episodi / elementi chiave (`?libro=` / `?audio=`)
-- **Cronologia e scaffale** – filtri Volumi / Audio / Tutto e percorso “Secondo Fabrizio”
+- **Schede in modale** – letture e ascolti con indici / episodi / elementi chiave (`?libro=` / `?audio=`)
+- **Cronologia e scaffale** – filtri Letture / Ascolti / Tutto e percorso “Secondo Fabrizio”
 - **Audio nativi** – Original e percorsi Audible (niente audiolibri doppioni dei volumi)
 
 ---
@@ -61,8 +61,8 @@ public/
 
 ## Dati
 
-- **Libri** → `src/data/books.ts` + `teasers.ts`, copertina `public/covers/{id}.webp`
-- **Audio** → `src/data/listens.ts` + `listen-teasers.ts`, copertina `public/covers/audio/{id}.webp`
+- **Letture** → `src/data/books.ts` + `teasers.ts`, copertina `public/covers/{id}.webp`
+- **Ascolti** → `src/data/listens.ts` + `listen-teasers.ts`, copertina `public/covers/audio/{id}.webp`
 - **Collegamenti grafo** → `src/lib/book-graph.ts` (serie, ponti, sigle; soglia peso ≥ 4)
 
 ---

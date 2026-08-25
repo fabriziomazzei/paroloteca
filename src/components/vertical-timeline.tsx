@@ -1,12 +1,14 @@
 import { ItemCard } from "@/components/item-card";
-import type { CatalogItem } from "@/data/types";
+import type { CatalogItem, ScopeId } from "@/data/types";
 
 export function VerticalTimeline({
   blocks,
+  scope,
   onOpenBook,
   onOpenAudio,
 }: {
   blocks: { year: number; items: CatalogItem[] }[];
+  scope: ScopeId;
   onOpenBook?: (id: string) => void;
   onOpenAudio?: (id: string) => void;
 }) {
@@ -31,6 +33,7 @@ export function VerticalTimeline({
                 key={item.kind === "book" ? item.book.id : item.listen.id}
                 item={item}
                 view="timeline"
+                scope={scope}
                 onOpenBook={onOpenBook}
                 onOpenAudio={onOpenAudio}
               />

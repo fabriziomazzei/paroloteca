@@ -170,8 +170,10 @@ export function BookBrainGraph({
     const t = window.setTimeout(() => {
       const g = graphRef.current;
       if (!g) return;
-      // Più repulsione + banda orizzontale (Y stretto, X libero)
-      g.d3Force("charge")?.strength(-420);
+      const mobile = dims.w < 800;
+      // Desktop: banda orizzontale (Y stretto, X libero).
+      // Mobile: colonna verticale (X stretto, Y libero).
+      g.d3Force("charge")?.strength(mobile ? -280 : -420);
       g.d3Force("link")?.distance(
         (link: {
           source?: string | { id?: string };
@@ -181,15 +183,15 @@ export function BookBrainGraph({
             typeof link.source === "object" ? link.source?.id : link.source;
           const tId =
             typeof link.target === "object" ? link.target?.id : link.target;
-          if (s === "paolo" || tId === "paolo") return 160;
-          return 110;
+          if (s === "paolo" || tId === "paolo") return mobile ? 120 : 160;
+          return mobile ? 88 : 110;
         },
       );
       g.d3Force("center")?.strength(0.02);
-      g.d3Force("x", forceX(0).strength(0.015));
-      g.d3Force("y", forceY(0).strength(0.12));
+      g.d3Force("x", forceX(0).strength(mobile ? 0.16 : 0.015));
+      g.d3Force("y", forceY(0).strength(mobile ? 0.018 : 0.12));
       g.d3ReheatSimulation();
-      window.setTimeout(() => g.zoomToFit(500, 36), 800);
+      window.setTimeout(() => g.zoomToFit(500, mobile ? 28 : 36), 800);
     }, 60);
     return () => window.clearTimeout(t);
   }, [ready, dims.w, dims.h]);

@@ -144,12 +144,25 @@ export function buildBookGraph(books: Book[] = BOOKS): {
     }
   }
 
-  const edges = [...edgeMap.values()]
-    .filter((e) => e.weight >= 4)
-    .sort((a, b) => b.weight - a.weight);
+  const edges = [...edgeMap.values()].sort((a, b) => b.weight - a.weight);
 
   return { books, edges };
 }
 
+const GRAPH = buildBookGraph();
+
 /** Snapshot per il brain hero (affinità >= 4). */
-export const BOOK_GRAPH_EDGES: GraphEdge[] = buildBookGraph().edges;
+export const BOOK_GRAPH_EDGES: GraphEdge[] = GRAPH.edges.filter(
+  (e) => e.weight >= 4,
+);
+
+export function relatedNeighbors(id: string, limit = 3) {
+  return GRAPH.edges
+    .filter((e) => e.a === id || e.b === id)
+    .map((e) => ({
+      id: e.a === id ? e.b : e.a,
+      weight: e.weight,
+      reasons: e.reasons,
+    }))
+    .slice(0, limit);
+}

@@ -3,21 +3,37 @@
 import { useEffect, useId, useRef } from "react";
 import { Cover } from "@/components/cover";
 import { ListenCover } from "@/components/listen-cover";
-import { formLabel, listenKindLabel, listenTeaserOf, teaserOf } from "@/lib/catalog";
+import {
+  catalogKindLabel,
+  formLabel,
+  listenKindLabel,
+  listenTeaserOf,
+  relatedItems,
+  teaserOf,
+  toSentenceCase,
+  type RelatedPick,
+} from "@/lib/catalog";
 import type { Book, Listen } from "@/data/types";
 
 export function ItemModal({
   book,
   listen,
   onClose,
+  onOpenBook,
+  onOpenAudio,
 }: {
   book?: Book | null;
   listen?: Listen | null;
   onClose: () => void;
+  onOpenBook?: (id: string) => void;
+  onOpenAudio?: (id: string) => void;
 }) {
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const open = Boolean(book || listen);
+  const currentId = book?.id ?? listen?.id ?? null;
+  const related = currentId ? relatedItems(currentId, 3) : [];
 
   useEffect(() => {
     if (!open) return;
@@ -34,6 +50,10 @@ export function ItemModal({
     };
   }, [open, onClose]);
 
+  useEffect(() => {
+    panelRef.current?.scrollTo({ top: 0 });
+  }, [currentId]);
+
   if (!open) return null;
 
   return (
@@ -45,6 +65,7 @@ export function ItemModal({
         onClick={onClose}
       />
       <div
+        ref={panelRef}
         className="modal-panel"
         role="dialog"
         aria-modal="true"
@@ -61,8 +82,71 @@ export function ItemModal({
 
         {book ? <BookModalBody book={book} titleId={titleId} /> : null}
         {listen ? <ListenModalBody listen={listen} titleId={titleId} /> : null}
+
+        <RelatedRail
+          picks={related}
+          onOpenBook={onOpenBook}
+          onOpenAudio={onOpenAudio}
+        />
       </div>
     </div>
+  );
+}
+
+function RelatedRail({
+  picks,
+  onOpenBook,
+  onOpenAudio,
+}: {
+  picks: RelatedPick[];
+  onOpenBook?: (id: string) => void;
+  onOpenAudio?: (id: string) => void;
+}) {
+  if (!picks.length) return null;
+
+  return (
+    <section className="related-block" aria-label="Potrebbe interessarti anche">
+      <h3>Potrebbe interessarti anche</h3>
+      <div className="related-row">
+        {picks.map((pick) => {
+          if (pick.item.kind === "book") {
+            const { book } = pick.item;
+            return (
+              <button
+                key={book.id}
+                type="button"
+                className="related-card"
+                onClick={() => onOpenBook?.(book.id)}
+              >
+                <Cover book={book} size="related" />
+                <p className="related-kind">{catalogKindLabel("book")}</p>
+                <p className="related-title">{book.title}</p>
+                {pick.reason ? (
+                  <p className="related-reason">{pick.reason}</p>
+                ) : null}
+              </button>
+            );
+          }
+
+          const { listen } = pick.item;
+          return (
+            <button
+              key={listen.id}
+              type="button"
+              className="related-card"
+              onClick={() => onOpenAudio?.(listen.id)}
+            >
+              <ListenCover listen={listen} size="related" />
+              <p className="related-kind">{catalogKindLabel("listen")}</p>
+              <p className="related-title">{listen.title}</p>
+              {pick.reason ? (
+                <p className="related-reason">{pick.reason}</p>
+              ) : null}
+            </button>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -93,21 +177,18 @@ function BookModalBody({ book, titleId }: { book: Book; titleId: string }) {
               {teaser.pages}
             </li>
           ) : null}
-          {book.isbn ? (
-            <li>
-              <span>ISBN</span>
-              {book.isbn}
-            </li>
-          ) : null}
         </ul>
 
         {teaser?.chapters?.length ? (
           <div className="teaser-block">
             <h3>{book.id === "brillare" ? "I post (titoli)" : "Indice"}</h3>
             <ol className="teaser-list">
-              {teaser.chapters.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
+              {teaser.chapters
+                .filter((item) => !/^ISBN\b/i.test(item))
+                .map((item) => {
+                  const title = toSentenceCase(item);
+                  return <li key={item}>{title}</li>;
+                })}
             </ol>
           </div>
         ) : null}
@@ -152,11 +233,11 @@ function ListenModalBody({
         <ul className="facts">
           <li>
             <span>Durata</span>
-            {listen.duration || "—"}
+            {listen.duration || "n.d."}
           </li>
           <li>
             <span>Voce</span>
-            {listen.narrator || "—"}
+            {listen.narrator || "n.d."}
           </li>
         </ul>
 
@@ -172,9 +253,10 @@ function ListenModalBody({
           <div className="teaser-block">
             <h3>Episodi</h3>
             <ol className="teaser-list">
-              {teaser.episodes.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
+              {teaser.episodes.map((item) => {
+                const title = toSentenceCase(item);
+                return <li key={item}>{title}</li>;
+              })}
             </ol>
           </div>
         ) : null}

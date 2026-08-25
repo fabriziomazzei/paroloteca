@@ -181,7 +181,6 @@ export const TEASERS: Record<string, BookTeaser> = {
       "BORZACCHIELLO",
       "IL CODICE SEGRETO",
       "DEL LINGUAGGIO",
-      "ISBN 978-88-85493-64-3",
       "INTRODUZIONE",
       "CONCLUSIONE",
       "ALBERT EINSTEIN",

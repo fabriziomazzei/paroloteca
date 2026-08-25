@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import type { Listen } from "@/data/types";
 import { listenKindLabel } from "@/lib/catalog";
 
-type Size = "thumb" | "shelf" | "detail";
+type Size = "thumb" | "shelf" | "detail" | "related";
 
 export function ListenCover({ listen, size }: { listen: Listen; size: Size }) {
   const imgRef = useRef<HTMLImageElement>(null);

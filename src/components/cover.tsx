@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { Book } from "@/data/types";
 
-type Size = "thumb" | "shelf" | "hero" | "detail";
+type Size = "thumb" | "shelf" | "hero" | "detail" | "related";
 
 export function Cover({ book, size }: { book: Book; size: Size }) {
   const imgRef = useRef<HTMLImageElement>(null);

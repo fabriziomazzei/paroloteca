@@ -25,7 +25,7 @@ export function Toolbar({
           aria-pressed={scope === "libri"}
           onClick={() => onScope("libri")}
         >
-          Volumi
+          Letture
         </button>
         <button
           type="button"
@@ -33,7 +33,7 @@ export function Toolbar({
           aria-pressed={scope === "audio"}
           onClick={() => onScope("audio")}
         >
-          Audio
+          Ascolti
         </button>
         <button
           type="button"

@@ -23,7 +23,7 @@ const plex = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Pa(r)oloteca · Una costellazione di parole",
   description:
-    "Una costellazione di parole: libri e ascolti di Paolo Borzacchiello, collegati in rete.",
+    "Una costellazione di parole: letture e ascolti di Paolo Borzacchiello, collegati in rete.",
   robots: {
     index: false,
     follow: false,
