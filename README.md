@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Paroloteca
 
-## Getting Started
+Nome pubblico: **Paroloteca** (biblioteca + parole).  
+Tagline: **Nel giusto ordine**.
 
-First, run the development server:
+Semilavorato Next.js per HCE. In pagina: niente Fabrizio, niente ClauDisk. Footer: *È tuo. Fanne quello che vuoi.*
 
-```bash
+## Perché Next
+
+Il sito è HTML/CSS/React. Next è solo il telaio: `npm run dev` in locale, Vercel in produzione. Non serve un database né un server tuo. `create-next-app` è la base giusta per una repo GitHub privata da condividere con Mazzilli.
+
+L'`index.html` iniziale era lo schizzo. Next **non lo legge**: la home è `src/app/page.tsx`. Per questo `npm run dev` mostrava il template vuoto di Next, non la libreria.
+
+## Aprire
+
+```
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Poi http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Cosa c'è
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Percorso | Ruolo |
+| --- | --- |
+| `src/app/` | Shell Next (layout, pagina, CSS) |
+| `src/data/` | Ere, forme, schede libri |
+| `src/lib/catalog.ts` | Filtri |
+| `src/components/` | Hero, toolbar, timeline, scaffale, copertina, cassetto |
+| `public/covers/` | `{id}.jpg` se c'è; altrimenti dorso tipografico |
 
-## Learn More
+## Copertine
 
-To learn more about Next.js, take a look at the following resources:
+File ufficiali: `public/covers/{id}.jpg`. Script: `tools/fetch-covers.ps1`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Prima chat in questa cartella: incolla `KICKOFF.md` (file locale, non va in repo).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Repo GitHub privata, poi Import su Vercel. Framework: Next.js, zero config extra.
