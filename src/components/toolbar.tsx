@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import type { EraId, LayoutId, ScopeId } from "@/data/types";
 import { ERAS } from "@/data/eras";
 
@@ -16,6 +19,8 @@ export function Toolbar({
   onLayout: (layout: LayoutId) => void;
   onEra: (era: EraId | "all") => void;
 }) {
+  const [pathOpen, setPathOpen] = useState(false);
+
   return (
     <div className="toolbar">
       <div className="view-toggle" role="group" aria-label="Contenuto">
@@ -64,12 +69,27 @@ export function Toolbar({
         </button>
       </div>
 
-      <div className="path-filter" aria-label="Secondo Fabrizio">
-        <div className="path-label">
+      <div
+        className={`path-filter${pathOpen ? " is-open" : ""}`}
+        aria-label="Secondo Fabrizio"
+      >
+        <button
+          type="button"
+          className="path-label"
+          aria-expanded={pathOpen}
+          aria-controls="path-chips"
+          onClick={() => {
+            if (window.matchMedia("(max-width: 800px)").matches) {
+              setPathOpen((open) => !open);
+            }
+          }}
+        >
           <span className="path-kicker">Secondo Fabrizio</span>
-          <span className="path-note">un modo di sfogliare · non ufficiale</span>
-        </div>
-        <div className="path-chips" role="group">
+          <span className="path-note">
+            un modo di sfogliare · non ufficiale
+          </span>
+        </button>
+        <div className="path-chips" id="path-chips" role="group">
           <button
             type="button"
             className="path-chip"
